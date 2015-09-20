@@ -2,7 +2,7 @@
 
 (function () {
     "use strict";
-    var app = angular.app("nodehack", []);
+    var app = angular.module("nodehack", []);
 
 
 })();
