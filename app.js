@@ -8,6 +8,8 @@ var app = express();
 
 var googleApiKey = require('./google-api-key');
 
+var storage = require('./routes/storage');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -18,6 +20,8 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/storage', storage);
 
 app.all('/*', function(req, res, next) {
   // Just send the index.html for other files to support HTML5Mode

@@ -3,7 +3,6 @@ html(lang="en", ng-app="nodehack")
   head
     title=title
     base(href="/")
-    link(rel='stylesheet', href='/stylesheets/style.css')
     script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js')
     script(src='/javascripts/lib/angular-ui-router.js')
     script(src='/javascripts/nodehack.js')
@@ -11,7 +10,7 @@ html(lang="en", ng-app="nodehack")
     link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css")
     script(src="//code.jquery.com/jquery-1.11.3.min.js")
     script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js")
-    script(src="https://maps.googleapis.com/maps/api/js?key=#{googleApiKey}&callback=initMap")
-
+    link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    ui-view
+    div(ui-view)
+    script(async defer src="https://maps.googleapis.com/maps/api/js?key=#{googleApiKey}&callback=initMap")
