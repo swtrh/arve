@@ -1,3 +1,7 @@
-This is a map
-
-<div map-view></div>
+<div map-view class="map-view"></div>
+<div ng-show="mapModel.shipToEdit !== undefined" class="shipEditPane">
+    <label>Ship name: <input type="text" ng-model="mapModel.shipToEdit.name"></label>
+    <label>MMSI: <input type="text" ng-model="mapModel.shipToEdit.mmsi"></label>
+    <button ng-click="saveShip()" class="btn btn-success">Save</button>
+    <button ng-click="cancelEdit()" class="btn btn-warning">x</button>
+</div>

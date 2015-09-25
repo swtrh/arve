@@ -2,15 +2,7 @@
 
 (function () {
     "use strict";
-    var app = angular.module("nodehack", ["ui.router"]);
-
-    var mapCallbacks = [];
-
-    window.initMap = function() {
-        mapCallbacks.forEach(function(cb) {
-            cb();
-        });
-    };
+    var app = angular.module("nodehack", ["ui.router", "GoogleMapsInitializer", "ngResource"]);
 
     app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
@@ -19,27 +11,38 @@
         $stateProvider
             .state('index', {
                 url: "/",
-                templateUrl: "/partials/index.html"
+                templateUrl: "/partials/index.html",
+                controller: "MainController"
             });
     });
 
-    app.directive("mapView", function() {
-        return {
-            template: "<div class='map'></div>",
-            link: function (scope, element) {
-                var el = document.getElementsByClassName("map")[0];
-                function initMap() {
-                    var map = new google.maps.Map(el, {
-                        center: {lat: -34.397, lng: 150.644},
-                        zoom: 8
-                    });
-                }
-                if(google.maps.Map !== undefined) {
-                    initMap();
-                } else {
-                    mapCallbacks.push(initMap);
-                }
+    app.controller("MainController", ["$scope", "Resources", function($scope, Resources) {
+        $scope.mapModel = {};
+        Resources.Ships.query((function(ships) {
+            $scope.mapModel.ships = ships;
+        }));
+
+        $scope.editShip = function(ship) {
+            $scope.$apply(function() {
+                $scope.mapModel.shipToEdit = ship;
+            });
+        };
+
+        $scope.cancelEdit = function() {
+            delete $scope.mapModel.shipToEdit;
+        };
+
+        $scope.saveShip = function() {
+            if($scope.mapModel.shipToEdit) {
+                $scope.mapModel.shipToEdit.$save();
+                delete $scope.mapModel.shipToEdit;
             }
         }
+    }]);
+
+    app.factory('Resources', function($resource) {
+        return {
+            Ships: $resource("/api/ships/:_id")
+        };
     });
 })();
